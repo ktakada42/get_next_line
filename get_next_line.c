@@ -6,16 +6,21 @@
 /*   By: ktakada <ktakada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/22 00:24:18 by ktakada           #+#    #+#             */
-/*   Updated: 2022/06/07 21:12:50 by ktakada          ###   ########.fr       */
+/*   Updated: 2022/06/18 20:03:10 by ktakada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
+ssize_t	get_lf_index_from_buf(char	*buf);
+
 char	*get_next_line(int fd)
 {
+	static char	*save;
 	char		*buf;
+	char		*line;
 	ssize_t		cc;
+	ssize_t		lf_index;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
@@ -29,7 +34,44 @@ char	*get_next_line(int fd)
 		return (NULL);
 	}
 	else
-		return (buf);
+	{
+		buf[cc] = '\0';
+		lf_index = get_lf_index_from_buf(buf);
+		if (lf_index >= 0)
+		{
+			line = ft_strjoin(save, buf);
+			if (line == NULL)
+			{
+				free(buf);
+				return (NULL);
+			}
+			save = buf + lf_index + 1;
+			return (line);
+		}
+		else
+		{
+			save = ft_strjoin(save, buf);
+			if (save == NULL)
+			{
+				free(buf);
+				return (NULL);
+			}
+		}
+	}
+}
+
+ssize_t	get_lf_index_from_buf(char	*buf)
+{
+	ssize_t	i;
+
+	i = 0;
+	while (buf[i] != '\0')
+	{
+		if (buf[i] == '\n')
+			return (i);
+		i++;
+	}
+	return (-1);
 }
 
 #include <fcntl.h>
