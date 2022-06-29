@@ -6,7 +6,7 @@
 /*   By: ktakada <ktakada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/22 00:12:32 by ktakada           #+#    #+#             */
-/*   Updated: 2022/06/08 16:24:34 by ktakada          ###   ########.fr       */
+/*   Updated: 2022/06/29 17:47:28 by ktakada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define GET_NEXT_LINE_H
 
 # include <stdbool.h>
+# include <stddef.h>
 # include <stdlib.h>
 # include <unistd.h>
 
