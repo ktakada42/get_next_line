@@ -6,7 +6,7 @@
 /*   By: ktakada <ktakada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/22 00:24:18 by ktakada           #+#    #+#             */
-/*   Updated: 2022/06/29 22:48:29 by ktakada          ###   ########.fr       */
+/*   Updated: 2022/06/29 23:10:38 by ktakada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,18 @@ char	*get_next_line(int fd)
 	buf = (char *)malloc(sizeof(char) * BUFFER_SIZE + 1);
 	if (buf == NULL)
 		return (NULL);
-	while (lf_index == -1 && cc != 0)
+	while (lf_index == -1)
 	{
 		cc = read(fd, buf, BUFFER_SIZE);
 		if (cc == -1)
 		{
 			free (buf);
 			return (NULL);
+		}
+		if (cc == 0)
+		{
+			free(buf);
+			return (save);
 		}
 		buf[cc] = '\0';
 		save = ft_strjoin(save, buf);
@@ -58,11 +63,6 @@ char	*get_next_line(int fd)
 			return (NULL);
 		}
 		lf_index = get_lf_index(save);
-	}
-	if (cc == 0)
-	{
-		free(buf);
-		return (save);
 	}
 	line = create_line_from_save(save, lf_index);
 	if (line == NULL)
