@@ -6,7 +6,7 @@
 /*   By: ktakada <ktakada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/22 00:24:18 by ktakada           #+#    #+#             */
-/*   Updated: 2022/06/29 23:10:38 by ktakada          ###   ########.fr       */
+/*   Updated: 2022/06/30 18:47:15 by ktakada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 ssize_t	get_lf_index(char *buf);
 
 char	*create_line_from_save(char *save, ssize_t lf_index);
-
-char	*create_line_from_save_and_buf(char *save, char *buf, ssize_t lf_index);
 
 char	*get_next_line(int fd)
 {
@@ -42,18 +40,13 @@ char	*get_next_line(int fd)
 	buf = (char *)malloc(sizeof(char) * BUFFER_SIZE + 1);
 	if (buf == NULL)
 		return (NULL);
-	while (lf_index == -1)
+	while (lf_index == -1 && cc != 0)
 	{
 		cc = read(fd, buf, BUFFER_SIZE);
 		if (cc == -1)
 		{
-			free (buf);
-			return (NULL);
-		}
-		if (cc == 0)
-		{
 			free(buf);
-			return (save);
+			return (NULL);
 		}
 		buf[cc] = '\0';
 		save = ft_strjoin(save, buf);
@@ -64,14 +57,15 @@ char	*get_next_line(int fd)
 		}
 		lf_index = get_lf_index(save);
 	}
+	free(buf);
+	if (save == NULL || *save == '\0')
+		return (NULL);
+	if (lf_index == -1)
+		return (save);
 	line = create_line_from_save(save, lf_index);
 	if (line == NULL)
-	{
-		free(buf);
 		return (NULL);
-	}
-	save = buf + lf_index + 1;
-	free(buf);
+	save += lf_index + 1;
 	return (line);
 }
 
@@ -99,29 +93,6 @@ char *create_line_from_save(char *save, ssize_t lf_index)
 	if (ret == NULL)
 		return (NULL);
 	ft_strlcpy(ret, save, lf_index + 1);
-	return (ret);
-}
-
-char *create_line_from_save_and_buf(char *save, char *buf, ssize_t lf_index)
-{
-	char	*ret;
-	char	*tmp_to_free;
-	size_t	save_len;
-
-	ret = ft_strjoin(save, buf);
-	if (ret == NULL)
-		return (NULL);
-	tmp_to_free = ret;
-	save_len = 0;
-	if (save != NULL)
-		save_len = ft_strlen(save);
-	ret = create_line_from_save(tmp_to_free, save_len + lf_index);
-	if (ret == NULL)
-	{
-		free(tmp_to_free);
-		return (NULL);
-	}
-	free(tmp_to_free);
 	return (ret);
 }
 
