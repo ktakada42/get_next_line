@@ -6,7 +6,7 @@
 /*   By: ktakada <ktakada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/22 00:24:18 by ktakada           #+#    #+#             */
-/*   Updated: 2022/06/30 18:47:15 by ktakada          ###   ########.fr       */
+/*   Updated: 2022/07/09 22:20:33 by ktakada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,16 @@ ssize_t	get_lf_index(char *buf);
 
 char	*create_line_from_save(char *save, ssize_t lf_index);
 
+char	*read_till_found_lf(int fd, char *save);
+
 char	*get_next_line(int fd)
 {
 	static char	*save;
-	char		*buf;
 	char		*line;
-	ssize_t		cc;
 	ssize_t		lf_index;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	line = NULL;
-	cc = -1;
 	lf_index = get_lf_index(save);
 	if (lf_index != -1)
 	{
@@ -37,29 +35,10 @@ char	*get_next_line(int fd)
 		save += lf_index + 1;
 		return (line);
 	}
-	buf = (char *)malloc(sizeof(char) * BUFFER_SIZE + 1);
-	if (buf == NULL)
-		return (NULL);
-	while (lf_index == -1 && cc != 0)
-	{
-		cc = read(fd, buf, BUFFER_SIZE);
-		if (cc == -1)
-		{
-			free(buf);
-			return (NULL);
-		}
-		buf[cc] = '\0';
-		save = ft_strjoin(save, buf);
-		if (save == NULL)
-		{
-			free(buf);
-			return (NULL);
-		}
-		lf_index = get_lf_index(save);
-	}
-	free(buf);
+	save = read_till_found_lf(fd, save);
 	if (save == NULL || *save == '\0')
 		return (NULL);
+	lf_index = get_lf_index(save);
 	if (lf_index == -1)
 		return (save);
 	line = create_line_from_save(save, lf_index);
@@ -94,6 +73,39 @@ char *create_line_from_save(char *save, ssize_t lf_index)
 		return (NULL);
 	ft_strlcpy(ret, save, lf_index + 1);
 	return (ret);
+}
+
+char	*read_till_found_lf(int fd, char *save)
+{
+	char	*buf;
+	char	*tmp_to_free;
+	ssize_t	cc;
+
+	buf = (char *)malloc(sizeof(char) * BUFFER_SIZE + 1);
+	if (buf == NULL)
+		return (NULL);
+	cc = 1;
+	while (get_lf_index(save) == -1 && cc != 0)
+	{
+		cc = read(fd, buf, BUFFER_SIZE);
+		if (cc == -1)
+		{
+			free(buf);
+			return (NULL);
+		}
+		buf[cc] = '\0';
+		tmp_to_free = save;
+		save = ft_strjoin(save, buf);
+		if (save == NULL)
+		{
+			free(buf);
+			return (NULL);
+		}
+		free(tmp_to_free);
+		tmp_to_free = NULL;
+	}
+	free(buf);
+	return (save);
 }
 
 #include <stdio.h>
