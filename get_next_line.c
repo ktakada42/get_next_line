@@ -6,7 +6,7 @@
 /*   By: ktakada <ktakada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/22 00:24:18 by ktakada           #+#    #+#             */
-/*   Updated: 2022/07/17 01:07:38 by ktakada          ###   ########.fr       */
+/*   Updated: 2022/07/18 22:32:25 by ktakada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,20 +72,13 @@ char	*read_till_found_lf(int fd, char *save)
 		buf[cc] = '\0';
 		tmp_to_free = save;
 		save = ft_strjoin(save, buf);
-		if (save == NULL)
-		{
-			free(tmp_to_free);
-			free(buf);
-			return (NULL);
-		}
 		free(tmp_to_free);
-		tmp_to_free = NULL;
 	}
 	free(buf);
 	return (save);
 }
 
-char *create_line_from_save(char *save)
+char	*create_line_from_save(char *save)
 {
 	size_t	i;
 	char	*line;
@@ -133,16 +126,11 @@ char	*move_save_next_to_lf(char *save)
 	i++;
 	j = 0;
 	while (save[i] != '\0')
-	{
-		new_save[j] = save[i];
-		i++;
-		j++;
-	}
+		new_save[j++] = save[i++];
 	new_save[j] = '\0';
 	free(save);
 	return (new_save);
 }
-
 
 /* #include <stdio.h> */
 /* #include <fcntl.h> */
