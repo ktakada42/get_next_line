@@ -6,7 +6,7 @@
 /*   By: ktakada <ktakada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/22 00:24:18 by ktakada           #+#    #+#             */
-/*   Updated: 2022/07/18 22:32:25 by ktakada          ###   ########.fr       */
+/*   Updated: 2022/07/18 23:29:16 by ktakada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,21 +88,12 @@ char	*create_line_from_save(char *save)
 		return (NULL);
 	while (save[i] != '\0' && save[i] != '\n')
 		i++;
-	line = (char *)malloc(sizeof(char) * i + 2);
+	if (save[i] == '\n')
+		i++;
+	line = (char *)malloc(sizeof(char) * i + 1);
 	if (line == NULL)
 		return (NULL);
-	i = 0;
-	while (save[i] != '\0' && save[i] != '\n')
-	{
-		line[i] = save[i];
-		i++;
-	}
-	if (save[i] == '\n')
-	{
-		line[i] = save[i];
-		i++;
-	}
-	line[i] = '\0';
+	ft_strlcpy(line, save, i + 1);
 	return (line);
 }
 
@@ -110,7 +101,7 @@ char	*move_save_next_to_lf(char *save)
 {
 	char	*new_save;
 	size_t	i;
-	size_t	j;
+	size_t	new_save_len;
 
 	i = 0;
 	while (save[i] != '\0' && save[i] != '\n')
@@ -120,14 +111,11 @@ char	*move_save_next_to_lf(char *save)
 		free(save);
 		return (NULL);
 	}
-	new_save = (char *)malloc(sizeof(char) * ft_strlen(save) - i);
+	new_save_len = ft_strlen(save) - i - 1;
+	new_save = (char *)malloc(sizeof(char) * new_save_len + 1);
 	if (new_save == NULL)
 		return (NULL);
-	i++;
-	j = 0;
-	while (save[i] != '\0')
-		new_save[j++] = save[i++];
-	new_save[j] = '\0';
+	ft_strlcpy(new_save, save + i + 1, new_save_len + 1);
 	free(save);
 	return (new_save);
 }
