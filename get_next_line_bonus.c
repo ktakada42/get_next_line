@@ -6,7 +6,7 @@
 /*   By: ktakada <ktakada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 16:32:23 by ktakada           #+#    #+#             */
-/*   Updated: 2022/07/20 16:33:46 by ktakada          ###   ########.fr       */
+/*   Updated: 2022/07/20 19:58:16 by ktakada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,16 @@ char	*move_save_next_to_lf(char *save);
 
 char	*get_next_line(int fd)
 {
-	static char	*save;
+	static char	*save[OPEN_MAX];
 	char		*line;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || OPEN_MAX < fd || BUFFER_SIZE <= 0)
 		return (NULL);
-	save = read_till_found_lf(fd, save);
-	if (save == NULL)
+	save[fd] = read_till_found_lf(fd, save[fd]);
+	if (save[fd] == NULL)
 		return (NULL);
-	line = create_line_from_save(save);
-	save = move_save_next_to_lf(save);
+	line = create_line_from_save(save[fd]);
+	save[fd] = move_save_next_to_lf(save[fd]);
 	return (line);
 }
 
