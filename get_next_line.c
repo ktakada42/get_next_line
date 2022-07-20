@@ -6,7 +6,7 @@
 /*   By: ktakada <ktakada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/22 00:24:18 by ktakada           #+#    #+#             */
-/*   Updated: 2022/07/18 23:29:16 by ktakada          ###   ########.fr       */
+/*   Updated: 2022/07/20 15:24:20 by ktakada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,7 @@ char	*move_save_next_to_lf(char *save)
 /* 			str = get_next_line(fd); */
 /* 			if (str == NULL) */
 /* 				break ; */
-/* 			printf("%s\n", str); */
+/* 			printf("%s", str); */
 /* 			free(str); */
 /* 		} */
 /* 	} */
