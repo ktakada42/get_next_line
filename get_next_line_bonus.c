@@ -6,7 +6,7 @@
 /*   By: ktakada <ktakada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 16:32:23 by ktakada           #+#    #+#             */
-/*   Updated: 2022/07/20 19:58:16 by ktakada          ###   ########.fr       */
+/*   Updated: 2022/07/20 22:02:16 by ktakada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,30 +125,52 @@ char	*move_save_next_to_lf(char *save)
 #include <fcntl.h>
 int	main(int argc, char **argv)
 {
-	int		fd;
+	int		files = argc - 1;
+	int		fd[files];
 	char	*str;
+	char	*strs[files];
+	int		j = 0;
+	bool	end;
 
-	fd = 0;
-	if (argc == 2)
+	for (int i = 0; i < files; i++)
+		strs[i] = NULL;
+	if (argc >= 2)
 	{
-		fd = open(argv[1], O_RDONLY);
-		if (fd == -1)
+		for (int i = 0; i < files; i++)
 		{
-			perror("open");
-			exit(1);
+			fd[i] = open(argv[i + 1], O_RDONLY);
+			if (fd[i] == -1)
+			{
+				perror("open");
+				exit(1);
+			}
 		}
 		while (true)
 		{
-			str = get_next_line(fd);
-			if (str == NULL)
-				break ;
-			printf("%s", str);
+			str = get_next_line(fd[j]);
+			printf("fd: %d, line: %s", j + 3, str);
+			strs[j] = str;
 			free(str);
+			for (int i = 0; i < files; i++)
+			{
+				if (strs[i] != NULL)
+				{
+					end = false;
+					break ;
+				}
+				end = true;
+			}
+			if (end)
+				break ;
+			j++;
+			if (j == files)
+				j = 0;
 		}
-	}
-	close(fd);
+	for (int i = 0; i < files; i++)
+		close(fd[i]);
 	printf("\n\n");
 	system("leaks -q a.out");
 	return (0);
+	}
 }
 */
