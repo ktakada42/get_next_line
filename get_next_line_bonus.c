@@ -6,7 +6,7 @@
 /*   By: ktakada <ktakada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 16:32:23 by ktakada           #+#    #+#             */
-/*   Updated: 2022/07/20 22:02:16 by ktakada          ###   ########.fr       */
+/*   Updated: 2022/07/23 11:48:06 by ktakada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ char	*create_line_from_save(char *save)
 	char	*line;
 
 	i = 0;
-	if (save[i] == '\0')
+	if (save[0] == '\0')
 		return (NULL);
 	while (save[i] != '\0' && save[i] != '\n')
 		i++;
@@ -114,7 +114,10 @@ char	*move_save_next_to_lf(char *save)
 	new_save_len = ft_strlen(save) - i - 1;
 	new_save = (char *)malloc(sizeof(char) * new_save_len + 1);
 	if (new_save == NULL)
+	{
+		free(save);
 		return (NULL);
+	}
 	ft_strlcpy(new_save, save + i + 1, new_save_len + 1);
 	free(save);
 	return (new_save);
