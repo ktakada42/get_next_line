@@ -6,7 +6,7 @@
 /*   By: ktakada <ktakada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 16:32:23 by ktakada           #+#    #+#             */
-/*   Updated: 2022/07/23 11:48:06 by ktakada          ###   ########.fr       */
+/*   Updated: 2022/07/23 11:56:10 by ktakada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,58 +122,3 @@ char	*move_save_next_to_lf(char *save)
 	free(save);
 	return (new_save);
 }
-
-/*
-#include <stdio.h>
-#include <fcntl.h>
-int	main(int argc, char **argv)
-{
-	int		files = argc - 1;
-	int		fd[files];
-	char	*str;
-	char	*strs[files];
-	int		j = 0;
-	bool	end;
-
-	for (int i = 0; i < files; i++)
-		strs[i] = NULL;
-	if (argc >= 2)
-	{
-		for (int i = 0; i < files; i++)
-		{
-			fd[i] = open(argv[i + 1], O_RDONLY);
-			if (fd[i] == -1)
-			{
-				perror("open");
-				exit(1);
-			}
-		}
-		while (true)
-		{
-			str = get_next_line(fd[j]);
-			printf("fd: %d, line: %s", j + 3, str);
-			strs[j] = str;
-			free(str);
-			for (int i = 0; i < files; i++)
-			{
-				if (strs[i] != NULL)
-				{
-					end = false;
-					break ;
-				}
-				end = true;
-			}
-			if (end)
-				break ;
-			j++;
-			if (j == files)
-				j = 0;
-		}
-	for (int i = 0; i < files; i++)
-		close(fd[i]);
-	printf("\n\n");
-	system("leaks -q a.out");
-	return (0);
-	}
-}
-*/

@@ -6,14 +6,13 @@
 /*   By: ktakada <ktakada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 16:31:58 by ktakada           #+#    #+#             */
-/*   Updated: 2022/07/20 19:54:27 by ktakada          ###   ########.fr       */
+/*   Updated: 2022/07/23 11:53:16 by ktakada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_BONUS_H
 # define GET_NEXT_LINE_BONUS_H
 
-# include <stdbool.h>
 # include <stddef.h>
 # include <stdlib.h>
 # include <unistd.h>

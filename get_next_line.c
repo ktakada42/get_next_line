@@ -6,7 +6,7 @@
 /*   By: ktakada <ktakada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/22 00:24:18 by ktakada           #+#    #+#             */
-/*   Updated: 2022/07/23 11:42:14 by ktakada          ###   ########.fr       */
+/*   Updated: 2022/07/23 11:56:02 by ktakada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,52 +122,3 @@ char	*move_save_next_to_lf(char *save)
 	free(save);
 	return (new_save);
 }
-
-/*
-#include <stdio.h>
-#include <fcntl.h>
-int	main(int argc, char **argv)
-{
-	int		fd;
-	char	*str;
-
-	fd = 0;
-
-	// コマンドライン引数なし => fd = 1(標準出力)
-	if (argc == 1)
-	{
-		fd = 1;
-		while (true)
-		{
-			str = get_next_line(fd);
-			if (str == NULL)
-				break ;
-			printf("%s", str);
-			free(str);
-		}
-	}
-
-	// コマンドライン引数あり
-	if (argc == 2)
-	{
-		fd = open(argv[1], O_RDONLY);
-		if (fd == -1)
-		{
-			perror("open");
-			exit(1);
-		}
-		while (true)
-		{
-			str = get_next_line(fd);
-			if (str == NULL)
-				break ;
-			printf("%s", str);
-			free(str);
-		}
-	}
-	close(fd);
-	printf("\n\n");
-	system("leaks -q a.out");
-	return (0);
-}
-*/
